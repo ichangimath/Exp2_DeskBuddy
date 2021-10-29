@@ -28,8 +28,8 @@ unsigned long tongueStart = 0;
 
 int sunPos = 0;
 
-int trigger = 0;
-int trigger2 = 0;
+int sunTrigger = 0;
+int tongueTrigger = 0;
 
 int dogPos = 0;
 int tonguePos = 0;
@@ -125,23 +125,23 @@ void loop() {
 
   if (LDR_Sun > 200)
   {
-    if (trigger == 0)
+    if (sunTrigger == 0)
       tStart = millis();
-    trigger = 1;
+    sunTrigger = 1;
     sunRise(int(constrain(map(((millis() - tStart) / 60000), 0, 720, 110, 70), 110, 70)));
   }
   if (LDR_Sun <200)
   {
     sunSet();
-    trigger = 0;
+    sunTrigger = 0;
   }
   if (LDR_Ball <150)
   {
     if (dogPos == 1)
       dogSit();
-    if (trigger2 == 0)
+    if (tongueTrigger == 0)
       tongueStart = millis();
-    trigger2 = 1;
+    tongueTrigger = 1;
     tongueOut(map(((millis() - tongueStart) / 1000), 0, 60, 0, 90));
     leftLoop();
     delay(3000);
@@ -160,8 +160,6 @@ void loop() {
     if (tonguePos == 1)
       tongueIn();
     allLEDOff();
-    trigger2 = 0;
+    tongueTrigger = 0;
   }
-
-
 }
