@@ -81,11 +81,11 @@ void tongueIn() {
 
 void sunRise(int sunPos) {
   sSun.write(sunPos);
-  if (sunPos < 80 || sunPos > 110)
+  if (sunPos < 80 || sunPos > 110) //control amount of RED 
     digitalWrite(ledRed, HIGH);
-  if (sunPos > 75 && sunPos < 80)
+  if (sunPos > 75 && sunPos < 80)//control amount of GREEN 
     digitalWrite(ledGreen, HIGH);
-  if (sunPos > 110 && sunPos < 115)
+  if (sunPos > 110 && sunPos < 115)//control amount of GREEN
     digitalWrite(ledGreen, HIGH);
   digitalWrite(ledWhite, HIGH);
 }
@@ -123,43 +123,43 @@ void loop() {
   LDR_Ball=analogRead(LDR_Ball_pin);
   LDR_Sun=analogRead(LDR_Sun_pin);
 
-  if (LDR_Sun > 200)
+  if (LDR_Sun > 200) //sunrise
   {
     if (sunTrigger == 0)
       tStart = millis();
     sunTrigger = 1;
     sunRise(int(constrain(map(((millis() - tStart) / 60000), 0, 720, 110, 70), 110, 70)));
   }
-  if (LDR_Sun <200)
+  if (LDR_Sun <200) //sunset
   {
     sunSet();
     sunTrigger = 0;
   }
-  if (LDR_Ball <150)
+  if (LDR_Ball <150)// ball placed down
   {
     if (dogPos == 1)
       dogSit();
     if (tongueTrigger == 0)
       tongueStart = millis();
     tongueTrigger = 1;
-    tongueOut(map(((millis() - tongueStart) / 1000), 0, 60, 0, 90));
-    leftLoop();
-    delay(3000);
-    rightLoop();
-    delay(3000);
-    leftLoop();
-    delay(3000);
-    rightLoop();
-    delay(3000);
+    tongueOut(map(((millis() - tongueStart) / 1000), 0, 60, 0, 90)); // tongue streched out max after an hour : indication to pick up the ball
     allLEDOff();
   }
-  if (LDR_Ball >150)
+  if (LDR_Ball >150)// ball picked up
   {
-    if (dogPos == 0)
+    if (dogPos == 0) // to do things only once
       dogStand();
-    if (tonguePos == 1)
+    if (tonguePos == 1)// to do things only once
       tongueIn();
-    allLEDOff();
     tongueTrigger = 0;
+    leftLoop(); //exercise after picking up
+    delay(3000);
+    rightLoop();
+    delay(3000);
+    leftLoop();
+    delay(3000);
+    rightLoop();
+    delay(3000);
+    allLEDOff();
   }
 }
